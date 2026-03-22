@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-
   nginx:
     image: nginx:1.21.6
     container_name: nginx_calculation
@@ -18,7 +17,7 @@ services:
   mysql:
     image: mysql:5.7.34
     container_name: mysql_calculation
-    platform: linux/amd64  # Вказуємо платформу для сумісності з MySQL
+    platform: linux/amd64  # Вказуємо платформу для сумісності
     environment:
       MYSQL_ROOT_PASSWORD: calculation_gen
       MYSQL_DATABASE: calculation_gen
@@ -36,9 +35,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: php_calculation
-    # Додаємо змінну середовища, щоб Python не буферизував вивід (корисно для логів)
-    environment:
-      - PYTHONUNBUFFERED=1
     volumes:
       - ./code:/var/www/html
     networks:
@@ -49,7 +45,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
     container_name: phpmyadmin_calculation
-    platform: linux/amd64  # Залишаємо для сумісності з MySQL
+    platform: linux/amd64
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: calculation_gen

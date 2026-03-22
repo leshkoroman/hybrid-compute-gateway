@@ -2,9 +2,9 @@ FROM php:7.4-fpm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 1. Встановлюємо ВСІ системні залежності разом (для PHP, Python, MPI та компіляції dlib)
+# 1. Встановлюємо ВСІ системні залежності: для PHP, Python та MPI
 RUN apt-get update && apt-get install -y \
-    # Залежності для PHP
+    # --- Залежності для Laravel (PHP) ---
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
@@ -19,13 +19,11 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
-    # Залежності для Python та системи
+    # --- Залежності для Python ---
     python3 \
     python3-pip \
     python3-dev \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    # Інструменти для компіляції (потрібні для MPI)
+    # --- Компiлятори та MPI (для mpi4py, scipy, numba) ---
     build-essential \
     cmake \
     gcc \
@@ -33,9 +31,6 @@ RUN apt-get update && apt-get install -y \
     gfortran \
     libopenmpi-dev \
     openmpi-bin \
-    mpich \
-    libboost-python-dev \
-    libboost-thread-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Налаштовуємо та встановлюємо розширення PHP
@@ -48,6 +43,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
 COPY --from=composer:2.1.9 /usr/bin/composer /usr/bin/composer
 
 # 4. Встановлюємо Python-бібліотеки
+# Використовуємо pip3 для встановлення бібліотек у системне середовище Python
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir \
     numpy \
@@ -56,16 +52,16 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
     numba \
     jupyter \ 
     scipy \ 
-    pandas 
+    pandas
 
-# 5. Налаштування робочої директорії
+# 5. Робоча директорія
 WORKDIR /var/www/html
 
-# Прокидаємо код
+# Копіюємо код
 COPY ./code /var/www/html
 
-# Надаємо правильні права доступу для веб-сервера
+# Надаємо права веб-серверу (щоб Laravel міг писати логі та зберігати результати)
 RUN chown -R www-data:www-data /var/www/html
 
-# Залишаємо стандартний CMD від базового образу php:7.4-fpm
-# Тобто: CMD ["php-fpm"]
+# Запускаємо PHP-FPM (обробка веб-запитів)
+CMD ["php-fpm"]
