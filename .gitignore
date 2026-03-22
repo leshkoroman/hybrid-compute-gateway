@@ -1,0 +1,65 @@
+# Database data
+/db_data/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Docker overrides
+docker-compose.override.yml
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Laravel/PHP specific
+/code/vendor/
+/code/node_modules/
+/code/storage/logs/*.log
+/code/storage/framework/cache/*
+/code/storage/framework/sessions/*
+/code/storage/framework/views/*
+/code/bootstrap/cache/*
+/code/.env
+/code/.htaccess
+/code/phpunit.xml
+
+# Python specific
+/code/__pycache__/
+/code/*.pyc
+/code/*.pyo
+/code/*.pyd
+/code/.Python
+/code/env/
+/code/venv/
+/code/ENV/
+/code/env.bak/
+/code/venv.bak/
+/code/.venv/
+/code/Pipfile.lock
+/code/.coverage
+/code/.tox/
+/code/.pytest_cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build and dist
+/code/dist/
+/code/build/
+
+# Temporary files
+*.tmp
+*.temp
