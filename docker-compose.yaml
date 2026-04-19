@@ -42,6 +42,21 @@ services:
     depends_on:
       - mysql
 
+  queue_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: queue_worker_calculation
+    volumes:
+      - ./code:/var/www/html
+    working_dir: /var/www/html     # Вказуємо, де лежить файл artisan
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+    restart: always                # Якщо впаде через неготову БД — Docker сам його перезапустить
+    command: php artisan queue:work --timeout=7500 --tries=1
+      
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
     container_name: phpmyadmin_calculation
